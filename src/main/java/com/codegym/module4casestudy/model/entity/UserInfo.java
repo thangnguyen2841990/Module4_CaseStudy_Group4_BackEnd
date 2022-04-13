@@ -27,8 +27,6 @@ public class UserInfo {
 
     private String backGround;
 
-
-
     @OneToOne
     private User user;
 
