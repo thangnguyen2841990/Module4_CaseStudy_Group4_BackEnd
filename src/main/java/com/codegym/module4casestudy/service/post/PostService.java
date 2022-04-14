@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,5 +34,15 @@ public class PostService implements IPostService{
     @Override
     public void deleteById(Long id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public Iterable<PostUser> findAll() {
+        return postRepository.findAll();
+    }
+
+    @Override
+    public void deletePost(Long postUserId) {
+        this.postRepository.deletePost(postUserId);
     }
 }

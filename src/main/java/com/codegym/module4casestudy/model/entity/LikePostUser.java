@@ -10,20 +10,22 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImagePostUser {
+public class LikePostUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String image;
+    private boolean status;
 
     @ManyToOne
     private PostUser postUser;
 
-    public ImagePostUser(String image, PostUser postUser) {
-        this.image = image;
+    @ManyToOne
+    private UserInfo userInfo;
+
+    public LikePostUser(boolean status, PostUser postUser, UserInfo userInfo) {
+        this.status = status;
         this.postUser = postUser;
+        this.userInfo = userInfo;
     }
-
-
 }
