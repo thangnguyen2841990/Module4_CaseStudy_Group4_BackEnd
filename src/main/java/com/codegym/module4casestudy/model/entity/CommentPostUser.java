@@ -18,11 +18,14 @@ public class CommentPostUser {
     private String content;
 
     @ManyToOne
-    private UserInfo userInfo;
+    private UserInfo userInfoPost;
 
     @ManyToOne
     private PostUser postUser;
 
-
-
+    public CommentPostUser(String content, UserInfo userInfoPost, PostUser postUser) {
+        this.content = content;
+        this.userInfoPost = userInfoPost;
+        this.postUser = postUser;
+    }
 }

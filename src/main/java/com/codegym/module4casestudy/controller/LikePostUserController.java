@@ -27,7 +27,6 @@ public class LikePostUserController {
 
    @PostMapping("/{userId}/{postUserId}")
     public ResponseEntity<LikePostUser> createNewLikePost(@PathVariable Long userId, @PathVariable Long postUserId){
-        List<LikePostUser> likePostUsers = this.likePostUserService.findAll();
         UserInfo userInfo = this.userInfoService.findByUserId(userId).get();
         PostUser postUser = this.postService.findById(postUserId).get();
         Optional<LikePostUser> like = this.likePostUserService.findLikePostUserByUserInfoIdAndPostUserId(userInfo.getId(),postUserId);
