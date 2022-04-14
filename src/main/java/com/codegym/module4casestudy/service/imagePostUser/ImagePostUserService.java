@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,4 +39,21 @@ public class ImagePostUserService implements IImagePostUserService {
     public Iterable<ImagePostUser> findAll() {
         return imagePostUserRepository.findAll();
     }
+
+    @Override
+    public ImagePostUser[] listImage(Long postUser) {
+        return this.imagePostUserRepository.listImage(postUser);
+    }
+
+    @Override
+    public Optional<ImagePostUser> findByPostUserId(Long postUserId) {
+        return imagePostUserRepository.findByPostUserId(postUserId);
+    }
+
+    @Override
+    public String findImageById(Long imageId) {
+        return imagePostUserRepository.findImageById(imageId);
+    }
+
+
 }
