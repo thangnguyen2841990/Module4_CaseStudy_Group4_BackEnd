@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Data
@@ -17,17 +18,19 @@ public class PostUser {
     private Long id;
 
     private String content;
-    private LocalDate dateCreated;
-    @OneToOne
-    private RolePostUser rolePostUser;
+    private Date dateCreated;
+    private boolean status;
+
 
     @ManyToOne
-    private User user;
+    private UserInfo userInfo;
 
-    public PostUser(String content, LocalDate dateCreated, RolePostUser rolePostUser, User user) {
+
+
+    public PostUser(String content, Date dateCreated, boolean status, UserInfo userInfo) {
         this.content = content;
         this.dateCreated = dateCreated;
-        this.rolePostUser = rolePostUser;
-        this.user = user;
+        this.status = status;
+        this.userInfo = userInfo;
     }
 }
