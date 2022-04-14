@@ -96,6 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/posts/createPost/{userId}/{postUserId}",
                         "/userInfo",
                         "/userInfo/{id}",
+                        "/groups/**",
                 "/image/**").permitAll()
                 .antMatchers("/facebooks/**")
                 .access("hasRole('ROLE_ADMIN')")

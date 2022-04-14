@@ -2,9 +2,11 @@ package com.codegym.module4casestudy.controller;
 
 import com.codegym.module4casestudy.model.entity.Group;
 import com.codegym.module4casestudy.model.dto.GroupMember;
+import com.codegym.module4casestudy.model.entity.User;
 import com.codegym.module4casestudy.model.entity.UserInfo;
 import com.codegym.module4casestudy.service.group.IGroupService;
 import com.codegym.module4casestudy.service.groupMember.IGroupMemberService;
+import com.codegym.module4casestudy.service.user.IUserService;
 import com.codegym.module4casestudy.service.userInfo.IUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,9 +29,11 @@ public class GroupController {
     private IUserInfoService userInfoService;
     @Autowired
     private IGroupMemberService groupMemberService;
+    @Autowired
+    private IUserService iUserService;
 
-    @GetMapping
-    public ResponseEntity<Page<Group>> findAllGroup(@PageableDefault(value = 100) Pageable pageable) {
+    @GetMapping()
+    public ResponseEntity<Page<Group>> findAllGroup( @PageableDefault(value = 100) Pageable pageable) {
         Page<Group> groups = groupService.findAll(pageable);
         if (groups.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -45,11 +49,32 @@ public class GroupController {
         }
         return new ResponseEntity<>(optionalGroup.get(), HttpStatus.OK);
     }
+    @GetMapping("/findByUserId/{userId}")
+    public ResponseEntity<Page<Group>> findAllGroupByCreateUserId(@PathVariable Long userId,@PageableDefault(value = 100) Pageable pageable) {
+
+        Page<Group> groups = groupService.findByUserId(userId,pageable);
+        if (groups.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(groups, HttpStatus.OK);
+    }
+
+    @GetMapping("/findByOtherUserId/{userId}")
+    public ResponseEntity<Page<Group>> findAllGroupOtherUserId(@PathVariable Long userId,@PageableDefault(value = 100) Pageable pageable) {
+        Page<Group> groups = groupService.findAllGroupOtherUserId(userId,pageable);
+        if (groups.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(groups, HttpStatus.OK);
+    }
+
 
     @PostMapping("/{userId}")
     public ResponseEntity<Group> createGroup(@RequestBody Group group, @PathVariable Long userId) {
-        Group newGroup = this.groupService.save(group);
         Optional<UserInfo> admin = this.userInfoService.findByUserId(userId);
+        Optional<User> user = this.iUserService.findById(userId);
+        group.setUser(user.get());
+        Group newGroup = this.groupService.save(group);
         GroupMember newGroupMember = new GroupMember(true, false, true, admin.get(), newGroup);
         this.groupMemberService.save(newGroupMember);
         return new ResponseEntity<>(newGroup, HttpStatus.CREATED);
