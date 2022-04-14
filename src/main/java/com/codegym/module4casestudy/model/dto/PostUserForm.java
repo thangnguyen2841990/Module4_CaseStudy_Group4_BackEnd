@@ -1,6 +1,5 @@
 package com.codegym.module4casestudy.model.dto;
 
-import com.codegym.module4casestudy.model.entity.RolePostUser;
 import com.codegym.module4casestudy.model.entity.User;
 import com.codegym.module4casestudy.model.entity.UserInfo;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ public class PostUserForm {
 
     private MultipartFile[] image;
 
-    private RolePostUser rolePostUser;
+    private UserInfo userInfo;
 
-    private User user;
+    private boolean status;
 }
