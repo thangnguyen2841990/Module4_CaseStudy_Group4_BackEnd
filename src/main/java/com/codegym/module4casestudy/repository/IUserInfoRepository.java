@@ -15,4 +15,9 @@ public interface IUserInfoRepository extends JpaRepository<UserInfo, Long> {
 
     @Query(value="select  * from user_info where user_id = ?1", nativeQuery = true)
     Optional<UserInfo> findByUserId(Long userId);
+
+    @Query(value = "select * from user_info where email = ?1", nativeQuery = true)
+    public UserInfo findByEmail(String email);
+
+    public UserInfo findByResetPasswordToken(String token);
 }

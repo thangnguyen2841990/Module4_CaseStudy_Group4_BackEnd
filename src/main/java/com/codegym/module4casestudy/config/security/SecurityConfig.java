@@ -10,6 +10,7 @@ import com.codegym.module4casestudy.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Properties;
 
 
 @Configuration
@@ -66,6 +68,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
+//    @Bean
+//    public JavaMailSenderImpl mailSender() {
+//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+////
+////        mailSender.setHost("smtp.gmail.com");
+////        mailSender.setPort(587);
+////
+////        mailSender.setUsername("fackbookc11@gmail.com");
+////        mailSender.setPassword("15042022");
+////
+////        Properties props = mailSender.getJavaMailProperties();
+////        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+////        props.put("mail.transport.protocol", "smtp");
+////        props.put("mail.smtp.auth", "true");
+////        props.put("mail.smtp.starttls.enable", "true");
+////        props.put("mail.debug", "true");
+//
+//        return mailSender;
+//    }
     @PostConstruct
     public void init() {
         List<User> users = (List<User>) userService.findAll();
