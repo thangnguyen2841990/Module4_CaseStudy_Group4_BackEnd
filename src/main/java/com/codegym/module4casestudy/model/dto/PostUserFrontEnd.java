@@ -1,5 +1,6 @@
 package com.codegym.module4casestudy.model.dto;
 
+import com.codegym.module4casestudy.model.entity.CommentPostUser;
 import com.codegym.module4casestudy.model.entity.ImagePostUser;
 import com.codegym.module4casestudy.model.entity.UserInfo;
 import lombok.AllArgsConstructor;
@@ -25,5 +26,17 @@ public class PostUserFrontEnd {
 
     private UserInfo userInfo;
 
+    private Integer totalLike;
 
+    private List<CommentPostUser> comments;
+
+    private int totalComments;
+
+    public PostUserFrontEnd(Long postUserId, String content, ImagePostUser[] listImage, Date dateCreated, UserInfo userInfo) {
+        this.postUserId = postUserId;
+        this.content = content;
+        this.listImage = listImage;
+        this.dateCreated = dateCreated;
+        this.userInfo = userInfo;
+    }
 }
