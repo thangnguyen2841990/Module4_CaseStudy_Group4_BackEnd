@@ -2,10 +2,10 @@ package com.codegym.module4casestudy.controller;
 
 import com.codegym.module4casestudy.model.dto.PostUserForm;
 import com.codegym.module4casestudy.model.dto.PostUserFrontEnd;
-import com.codegym.module4casestudy.model.entity.ImagePostUser;
-import com.codegym.module4casestudy.model.entity.PostUser;
-import com.codegym.module4casestudy.model.entity.UserInfo;
+import com.codegym.module4casestudy.model.entity.*;
+import com.codegym.module4casestudy.service.commentPostUser.ICommentPostUserService;
 import com.codegym.module4casestudy.service.imagePostUser.IImagePostUserService;
+import com.codegym.module4casestudy.service.likePostUser.ILikePostUserService;
 import com.codegym.module4casestudy.service.post.IPostService;
 import com.codegym.module4casestudy.service.user.IUserService;
 import com.codegym.module4casestudy.service.userInfo.IUserInfoService;
@@ -41,6 +41,12 @@ public class PostController {
     @Autowired
     private IImagePostUserService imagePostUserService;
 
+    @Autowired
+    private ILikePostUserService likePostUserService;
+
+    @Autowired
+    private ICommentPostUserService commentPostUserService;
+
     @Value("C:/Users/nguye/OneDrive/Desktop/image/")
     private String uploadPath;
 
@@ -48,10 +54,13 @@ public class PostController {
     public ResponseEntity<List<PostUserFrontEnd>> showAllPostUser() {
         List<PostUser> postUsers = (List<PostUser>) this.postService.findAll();
         List<PostUserFrontEnd> postUserFrontEnd = new ArrayList<>();
-
+        List<CommentPostUser> comments = new ArrayList<>();
         for (int i = 0; i < postUsers.size(); i++) {
             postUserFrontEnd.add(new PostUserFrontEnd(postUsers.get(i).getId(), postUsers.get(i).getContent(), imagePostUserService.listImage(postUsers.get(i).getId()),
-                    postUsers.get(i).getDateCreated(), postUsers.get(i).getUserInfo()));
+                    postUsers.get(i).getDateCreated(), postUsers.get(i).getUserInfo(), likePostUserService.totalLikeByPost(postUsers.get(i).getId()).size(),
+                    commentPostUserService.displayAllCommentOfPost(postUsers.get(i).getId()),
+                    commentPostUserService.displayAllCommentOfPost(postUsers.get(i).getId()).size()
+            ));
         }
         return new ResponseEntity<>(postUserFrontEnd, HttpStatus.OK);
     }
