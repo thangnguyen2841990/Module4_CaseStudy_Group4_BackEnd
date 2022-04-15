@@ -17,14 +17,10 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    @ManyToOne
-    private User fromUser;
-    @OneToMany
-    private List<User> toUserList;
+    private Long toUserId;
 
-    public Notification(String content, User fromUser, List<User> toUserList) {
+    public Notification(String content, Long toUserId) {
         this.content = content;
-        this.fromUser = fromUser;
-        this.toUserList = toUserList;
+        this.toUserId = toUserId;
     }
 }
