@@ -25,6 +25,7 @@ public class User {
     @JoinTable(name = "user_role")
     private List<Role> roles;
 
+
     public User(String username, String password, List<Role> roles) {
         this.username = username;
         this.password = password;

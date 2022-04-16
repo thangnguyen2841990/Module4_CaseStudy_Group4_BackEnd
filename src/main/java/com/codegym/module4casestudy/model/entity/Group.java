@@ -20,7 +20,6 @@ public class Group {
     private String background;
     @ManyToOne
     private User user;
-
     public Group(String name) {
         this.name = name;
     }

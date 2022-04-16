@@ -1,7 +1,8 @@
 package com.codegym.module4casestudy.controller;
 
 import com.codegym.module4casestudy.model.entity.Group;
-import com.codegym.module4casestudy.model.dto.GroupMember;
+
+import com.codegym.module4casestudy.model.entity.GroupMember;
 import com.codegym.module4casestudy.model.entity.User;
 import com.codegym.module4casestudy.model.entity.UserInfo;
 import com.codegym.module4casestudy.service.group.IGroupService;
@@ -75,8 +76,9 @@ public class GroupController {
         Optional<User> user = this.iUserService.findById(userId);
         group.setUser(user.get());
         Group newGroup = this.groupService.save(group);
-        GroupMember newGroupMember = new GroupMember(true, false, true, admin.get(), newGroup);
-        this.groupMemberService.save(newGroupMember);
+
+
+        groupMemberService.save(new GroupMember(group,admin.get(),0));
         return new ResponseEntity<>(newGroup, HttpStatus.CREATED);
     }
 

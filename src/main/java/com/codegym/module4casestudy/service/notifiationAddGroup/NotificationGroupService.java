@@ -42,7 +42,14 @@ public class NotificationGroupService implements INotificationGroupService{
     }
 
     @Override
-    public Optional<NotificationAddGroup> findNotification(Long fromUserId, Long toUserId) {
-        return notificationAddGroupRepository.findNotification(fromUserId, toUserId);
+    public Optional<NotificationAddGroup> findNotification(Long groupId, Long fromId) {
+        return notificationAddGroupRepository.findNotification(groupId, fromId);
     }
+
+    @Override
+    public Optional<NotificationAddGroup> findNotificationByGroupIdAndFromUserId(Long fromUserId, Long groupId) {
+        return Optional.empty();
+    }
+
+
 }

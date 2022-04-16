@@ -10,5 +10,6 @@ import java.util.Optional;
 
 public interface INotificationGroupService extends IGeneralService<NotificationAddGroup> {
     List<NotificationAddGroup> showNotificationAddGroup(Long toUserId);
-    Optional<NotificationAddGroup> findNotification(Long fromUserId, Long toUserId);
+    Optional<NotificationAddGroup> findNotification(Long groupId, Long fromId);
+    Optional<NotificationAddGroup> findNotificationByGroupIdAndFromUserId(Long fromUserId, Long groupId);
 }
