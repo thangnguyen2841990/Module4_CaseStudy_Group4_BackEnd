@@ -2,10 +2,10 @@ package com.codegym.module4casestudy.controller;
 
 import com.codegym.module4casestudy.model.dto.PostUserForm;
 import com.codegym.module4casestudy.model.dto.PostUserFrontEnd;
-import com.codegym.module4casestudy.model.entity.ImagePostUser;
-import com.codegym.module4casestudy.model.entity.PostUser;
-import com.codegym.module4casestudy.model.entity.UserInfo;
+import com.codegym.module4casestudy.model.entity.*;
+import com.codegym.module4casestudy.service.commentPostUser.ICommentPostUserService;
 import com.codegym.module4casestudy.service.imagePostUser.IImagePostUserService;
+import com.codegym.module4casestudy.service.likePostUser.ILikePostUserService;
 import com.codegym.module4casestudy.service.post.IPostService;
 import com.codegym.module4casestudy.service.user.IUserService;
 import com.codegym.module4casestudy.service.userInfo.IUserInfoService;
@@ -41,17 +41,29 @@ public class PostController {
     @Autowired
     private IImagePostUserService imagePostUserService;
 
+    @Autowired
+    private ILikePostUserService likePostUserService;
+
+    @Autowired
+    private ICommentPostUserService commentPostUserService;
+
     @Value("C:/Users/nguye/OneDrive/Desktop/image/")
     private String uploadPath;
 
-    @GetMapping
-    public ResponseEntity<List<PostUserFrontEnd>> showAllPostUser() {
-        List<PostUser> postUsers = (List<PostUser>) this.postService.findAll();
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<PostUserFrontEnd>> showAllPostUser(@PathVariable Long userId) {
+        Optional<UserInfo> userInfo = this.userInfoService.findByUserId(userId);
+        List<PostUser> postUsers = this.postService.showAllPostByUser(userInfo.get().getId());
         List<PostUserFrontEnd> postUserFrontEnd = new ArrayList<>();
+        List<CommentPostUser> comments = new ArrayList<>();
 
         for (int i = 0; i < postUsers.size(); i++) {
             postUserFrontEnd.add(new PostUserFrontEnd(postUsers.get(i).getId(), postUsers.get(i).getContent(), imagePostUserService.listImage(postUsers.get(i).getId()),
-                    postUsers.get(i).getDateCreated(), postUsers.get(i).getUserInfo()));
+                    this.postService.getDiffDays(postUsers.get(i).getDateCreated(), new Date())
+                    , postUsers.get(i).getUserInfo(), likePostUserService.totalLikeByPost(postUsers.get(i).getId()).size(),
+                    commentPostUserService.displayAllCommentOfPost(postUsers.get(i).getId()),
+                    commentPostUserService.displayAllCommentOfPost(postUsers.get(i).getId()).size()
+            ));
         }
         return new ResponseEntity<>(postUserFrontEnd, HttpStatus.OK);
     }
@@ -61,7 +73,7 @@ public class PostController {
         Optional<PostUser> postUserOptional = this.postService.findById(postUserId);
         ImagePostUser[] listImage = this.imagePostUserService.listImage(postUserId);
         Optional<UserInfo> userInfo = this.userInfoService.findByUserId(userId);
-        PostUserFrontEnd postUserFrontEnd = new PostUserFrontEnd(postUserId, postUserOptional.get().getContent(), listImage, postUserOptional.get().getDateCreated(), userInfo.get());
+        PostUserFrontEnd postUserFrontEnd = new PostUserFrontEnd(postUserId, postUserOptional.get().getContent(), listImage, this.postService.getDiffDays(postUserOptional.get().getDateCreated(),new Date()), userInfo.get());
         return new ResponseEntity<>(postUserFrontEnd, HttpStatus.OK);
     }
 

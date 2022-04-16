@@ -1,16 +1,22 @@
 package com.codegym.module4casestudy.controller;
 
-import com.codegym.module4casestudy.model.dto.GroupMember;
+
+import com.codegym.module4casestudy.model.entity.Group;
+import com.codegym.module4casestudy.model.entity.GroupMember;
+import com.codegym.module4casestudy.model.entity.NotificationAddGroup;
+import com.codegym.module4casestudy.model.entity.UserInfo;
+import com.codegym.module4casestudy.service.group.IGroupService;
 import com.codegym.module4casestudy.service.groupMember.IGroupMemberService;
+import com.codegym.module4casestudy.service.notifiationAddGroup.INotificationGroupService;
+import com.codegym.module4casestudy.service.userInfo.IUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -19,44 +25,38 @@ import java.util.Optional;
 public class GroupMemberController {
     @Autowired
     private IGroupMemberService groupMemberService;
+    @Autowired
+    private IGroupService groupService;
+    @Autowired
+    private IUserInfoService userInfoService;
+    @Autowired
+    private INotificationGroupService notificationGroupService;
 
-    @GetMapping
-    public ResponseEntity<Page<GroupMember>> findAllGroupMember(@PageableDefault(value = 100) Pageable pageable) {
-        Page<GroupMember> groupMembers = groupMemberService.findAll(pageable);
-        if (groupMembers.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+
+    @PostMapping("/{group_id}/{member_id}")
+    public ResponseEntity<GroupMember> acceptMember(@PathVariable Long group_id, @PathVariable Long member_id) {
+        Group group = groupService.findById(group_id).get();
+        UserInfo userInfo = userInfoService.findById(member_id).get();
+
+        GroupMember newMember = groupMemberService.save(new GroupMember(group, userInfo, 1));
+        Optional<NotificationAddGroup> notificationAddGroup = notificationGroupService.findNotification(group_id, userInfo.getId());
+        notificationGroupService.deleteById(notificationAddGroup.get().getId());
+        return new ResponseEntity<>(newMember, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{group_id}/{member_id}")
+    public ResponseEntity<GroupMember> deleteMember(@PathVariable Long group_id, @PathVariable Long member_id) {
+        Group group = groupService.findById(group_id).get();
+        UserInfo userInfo = userInfoService.findById(member_id).get();
+
+        GroupMember newMember = new GroupMember();
+        Optional<NotificationAddGroup> notificationAddGroup = notificationGroupService.findNotification(group_id, userInfo.getId());
+        notificationGroupService.deleteById(notificationAddGroup.get().getId());
+        return new ResponseEntity<>(newMember, HttpStatus.OK);
+    }
+    @GetMapping("/{groupId}")
+    public ResponseEntity<List<GroupMember>> showGroupMemberById(@PathVariable Long groupId) {
+        List<GroupMember> groupMembers = groupMemberService.findGroupMemberByGroupId(groupId);
         return new ResponseEntity<>(groupMembers, HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<GroupMember> findGroupMemberById(@PathVariable Long id) {
-        Optional<GroupMember> groupMemberOptional = this.groupMemberService.findById(id);
-        if (!groupMemberOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(groupMemberOptional.get(), HttpStatus.OK);
-    }
-    @PostMapping
-    public ResponseEntity<GroupMember> createGroupMember(@RequestBody GroupMember groupMember) {
-        return new ResponseEntity<>(groupMemberService.save(groupMember), HttpStatus.CREATED);
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<GroupMember> editGroupMember(@PathVariable Long id, @RequestBody GroupMember groupMember) {
-        Optional<GroupMember> optionalGroupMember = groupMemberService.findById(id);
-        if (!optionalGroupMember.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        groupMember.setId(id);
-        return new ResponseEntity<>(groupMemberService.save(groupMember), HttpStatus.OK);
-    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<GroupMember> deleteGroupMemberById(@PathVariable Long id) {
-        Optional<GroupMember> groupMemberOptional = groupMemberService.findById(id);
-        if (!groupMemberOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        groupMemberService.deleteById(id);
-        return new ResponseEntity<>(groupMemberOptional.get(), HttpStatus.OK);
     }
 }

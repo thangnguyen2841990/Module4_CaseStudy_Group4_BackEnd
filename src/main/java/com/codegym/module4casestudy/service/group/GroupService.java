@@ -33,4 +33,14 @@ public class GroupService implements IGroupService{
     public void deleteById(Long id) {
     groupRepository.deleteGroup(id);
     }
+
+    @Override
+    public Page<Group> findByUserId(Long id, Pageable pageable) {
+        return groupRepository.findAllByUserId(id, pageable);
+    }
+
+    @Override
+    public Page<Group> findAllGroupOtherUserId(Long id, Pageable pageable) {
+        return groupRepository.findAllGroupOtherUserId(id, pageable);
+    }
 }

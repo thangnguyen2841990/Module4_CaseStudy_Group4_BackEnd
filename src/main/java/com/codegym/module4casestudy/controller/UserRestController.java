@@ -64,9 +64,11 @@ public class UserRestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         User newUser = new User(user.getUsername(), user.getPassword());
-        userService.saveAdmin(newUser);
+        userService.save(newUser);
+        String avatar = "avatar.jpg";
+        String background = "background.jpg";
         UserInfo userInfo = new UserInfo(user.getEmail(),user.getFullName(),user.getPhoneNumber(),
-                user.getDateOfBirth(),user.getAddress(), newUser);
+                user.getDateOfBirth(),user.getAddress(),avatar,background, newUser);
         userInfoService.save(userInfo);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
