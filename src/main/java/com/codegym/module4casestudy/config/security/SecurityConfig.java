@@ -68,25 +68,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
-//    @Bean
-//    public JavaMailSenderImpl mailSender() {
-//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-////
-////        mailSender.setHost("smtp.gmail.com");
-////        mailSender.setPort(587);
-////
-////        mailSender.setUsername("fackbookc11@gmail.com");
-////        mailSender.setPassword("15042022");
-////
-////        Properties props = mailSender.getJavaMailProperties();
-////        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-////        props.put("mail.transport.protocol", "smtp");
-////        props.put("mail.smtp.auth", "true");
-////        props.put("mail.smtp.starttls.enable", "true");
-////        props.put("mail.debug", "true");
-//
-//        return mailSender;
-//    }
+    @Bean
+    public JavaMailSenderImpl mailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+
+        mailSender.setUsername("fackbookc11@gmail.com");
+        mailSender.setPassword("xgocsdvurhwtrbqt");
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.required", "true");
+        //props.put("mail.debug", "true");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        return mailSender;
+    }
     @PostConstruct
     public void init() {
         List<User> users = (List<User>) userService.findAll();
