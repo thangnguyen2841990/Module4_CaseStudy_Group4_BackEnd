@@ -1,9 +1,8 @@
 package com.codegym.module4casestudy.controller;
 
-import com.codegym.module4casestudy.model.entity.LikePostUser;
-import com.codegym.module4casestudy.model.entity.PostUser;
-import com.codegym.module4casestudy.model.entity.UserInfo;
+import com.codegym.module4casestudy.model.entity.*;
 import com.codegym.module4casestudy.service.likePostUser.ILikePostUserService;
+import com.codegym.module4casestudy.service.message.IMessageService;
 import com.codegym.module4casestudy.service.post.IPostService;
 import com.codegym.module4casestudy.service.userInfo.IUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,15 +24,26 @@ public class LikePostUserController {
     private IUserInfoService userInfoService;
     @Autowired
     private IPostService postService;
+    @Autowired
+    private IMessageService messageService;
 
    @PostMapping("/{userId}/{postUserId}")
     public ResponseEntity<LikePostUser> createNewLikePost(@PathVariable Long userId, @PathVariable Long postUserId){
         UserInfo userInfo = this.userInfoService.findByUserId(userId).get();
         PostUser postUser = this.postService.findById(postUserId).get();
+        UserInfo toUser = postUser.getUserInfo();
         Optional<LikePostUser> like = this.likePostUserService.findLikePostUserByUserInfoIdAndPostUserId(userInfo.getId(),postUserId);
         if (!like.isPresent()){
             LikePostUser likePostUser = new LikePostUser(true,postUser,userInfo);
             this.likePostUserService.save(likePostUser);
+
+            Message newMessage = new Message();
+            newMessage.setFromUser(userInfo);
+            newMessage.setToUser(toUser);
+            Date date = new Date();
+            newMessage.setDateCreated(date);
+            newMessage.setStatus(1);
+            this.messageService.save(newMessage);
             return new ResponseEntity<>(likePostUser,HttpStatus.OK);
 
         }else{

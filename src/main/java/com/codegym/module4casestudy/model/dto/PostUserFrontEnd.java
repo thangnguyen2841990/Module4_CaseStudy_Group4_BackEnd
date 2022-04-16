@@ -22,7 +22,7 @@ public class PostUserFrontEnd {
 
     private ImagePostUser[] listImage;
 
-    private Date dateCreated;
+    private String dateCreated;
 
     private UserInfo userInfo;
 
@@ -32,7 +32,7 @@ public class PostUserFrontEnd {
 
     private int totalComments;
 
-    public PostUserFrontEnd(Long postUserId, String content, ImagePostUser[] listImage, Date dateCreated, UserInfo userInfo) {
+    public PostUserFrontEnd(Long postUserId, String content, ImagePostUser[] listImage, String dateCreated, UserInfo userInfo) {
         this.postUserId = postUserId;
         this.content = content;
         this.listImage = listImage;

@@ -40,4 +40,9 @@ public class NotificationAddFriendsService implements INotificationAddFriendsSer
     public List<NotificationAddFriends> showNotifications(Long toUserId) {
         return notifiCationRepository.showNotifications(toUserId);
     }
+
+    @Override
+    public Optional<NotificationAddFriends> findNotificationAddFriends(Long fromUserId, Long toUserId) {
+        return this.notifiCationRepository.findNotificationAddFriends(fromUserId, toUserId);
+    }
 }
