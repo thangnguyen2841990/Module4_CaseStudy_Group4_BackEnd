@@ -27,7 +27,7 @@ public class LikePostGroupController {
     @Autowired
     private GroupMemberService groupMemberService;
 
-    @GetMapping("/{postGroupId}")
+    @GetMapping("/{postGroupId}/{groupId}")
     private ResponseEntity<Integer> countLikePostGroup(@PathVariable Long postGroupId) {
         List<LikePostGroup> likePostGroups = likePostGroupService.totalLikeByPost(postGroupId);
         Integer totalLike = likePostGroups.size();

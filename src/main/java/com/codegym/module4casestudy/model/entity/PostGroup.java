@@ -24,10 +24,14 @@ public class PostGroup {
     @ManyToOne
     private GroupMember groupMember;
 
-    public PostGroup(String content, Date dateCreated, boolean status, GroupMember groupMember) {
+    @ManyToOne
+    private Group group;
+
+    public PostGroup(String content, Date dateCreated, boolean status, GroupMember groupMember, Group group) {
         this.content = content;
         this.dateCreated = dateCreated;
         this.status = status;
         this.groupMember = groupMember;
+        this.group = group;
     }
 }

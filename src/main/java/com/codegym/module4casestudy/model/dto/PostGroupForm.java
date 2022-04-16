@@ -1,4 +1,5 @@
 package com.codegym.module4casestudy.model.dto;
+import com.codegym.module4casestudy.model.entity.Group;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,6 @@ public class PostGroupForm {
     private GroupMember groupMember;
 
     private boolean status;
+
+    private Group group;
 }

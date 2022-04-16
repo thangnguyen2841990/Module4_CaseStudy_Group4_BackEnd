@@ -28,11 +28,22 @@ public class PostGroupFrontEnd {
 
     private int totalComments;
 
+    private Group group;
+
     public PostGroupFrontEnd(Long postGroupId, String content, ImagePostGroup[] listImage, Date dateCreated, GroupMember groupMember) {
         this.postGroupId = postGroupId;
         this.content = content;
         this.listImage = listImage;
         this.dateCreated = dateCreated;
         this.groupMember = groupMember;
+    }
+
+    public PostGroupFrontEnd(Long postGroupId, String content, ImagePostGroup[] listImage, Date dateCreated, GroupMember groupMember, Group group) {
+        this.postGroupId = postGroupId;
+        this.content = content;
+        this.listImage = listImage;
+        this.dateCreated = dateCreated;
+        this.groupMember = groupMember;
+        this.group = group;
     }
 }
