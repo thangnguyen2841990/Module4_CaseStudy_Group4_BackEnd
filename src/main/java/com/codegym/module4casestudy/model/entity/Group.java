@@ -18,7 +18,8 @@ public class Group {
     private String name;
     private String avatar;
     private String background;
-
+    @ManyToOne
+    private User user;
     public Group(String name) {
         this.name = name;
     }

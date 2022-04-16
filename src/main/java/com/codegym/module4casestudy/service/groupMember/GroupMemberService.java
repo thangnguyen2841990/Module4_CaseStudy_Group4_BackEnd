@@ -1,12 +1,15 @@
 package com.codegym.module4casestudy.service.groupMember;
 
-import com.codegym.module4casestudy.model.dto.GroupMember;
+
+import com.codegym.module4casestudy.model.entity.GroupMember;
+import com.codegym.module4casestudy.model.entity.NotificationAddGroup;
 import com.codegym.module4casestudy.repository.IGroupMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public class GroupMemberService implements IGroupMemberService{
@@ -32,5 +35,15 @@ public class GroupMemberService implements IGroupMemberService{
     @Override
     public void deleteById(Long id) {
     groupMemberRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<NotificationAddGroup> findNotificationAccept(Long fromUserId, Long groupId) {
+        return groupMemberRepository.findNotificationAccept(fromUserId, groupId);
+    }
+
+    @Override
+    public List<GroupMember> findGroupMemberByGroupId(Long groupId) {
+        return groupMemberRepository.findGroupMemberByGroupId(groupId);
     }
 }
