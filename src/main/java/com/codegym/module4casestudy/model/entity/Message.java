@@ -3,34 +3,33 @@ package com.codegym.module4casestudy.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PostUser {
+@AllArgsConstructor
+public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String content;
-    private Date dateCreated;
-    private boolean status;
-
+    @ManyToOne
+    private UserInfo fromUser;
 
     @ManyToOne
-    private UserInfo userInfo;
+    private UserInfo toUser;
 
+    private Date dateCreated;
 
+    private int status;
 
-    public PostUser(String content, Date dateCreated, boolean status, UserInfo userInfo) {
-        this.content = content;
+    public Message(UserInfo fromUser, UserInfo toUser, Date dateCreated) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
         this.dateCreated = dateCreated;
-        this.status = status;
-        this.userInfo = userInfo;
     }
 }

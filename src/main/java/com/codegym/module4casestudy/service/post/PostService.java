@@ -7,7 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class PostService implements IPostService{
@@ -34,4 +37,54 @@ public class PostService implements IPostService{
     public void deleteById(Long id) {
         postRepository.deleteById(id);
     }
-}
+
+    @Override
+    public Iterable<PostUser> findAll() {
+        return postRepository.findAll();
+    }
+
+    @Override
+    public void deletePost(Long postUserId) {
+        this.postRepository.deletePost(postUserId);
+    }
+
+    @Override
+    public List<PostUser> showAllPostByUser(Long userInfoId) {
+        return this.postRepository.showAllPostByUser(userInfoId);
+    }
+
+    @Override
+    public String getDiffDays(Date time1, Date time2) {
+
+        long timeDifferenceMilliseconds = (time2.getTime() - time1.getTime());
+
+
+
+        long diffSeconds = timeDifferenceMilliseconds / 1000;
+        long diffMinutes = timeDifferenceMilliseconds / (60 * 1000);
+        long diffHours = timeDifferenceMilliseconds / (60 * 60 * 1000);
+        long diffDays = timeDifferenceMilliseconds / (60 * 60 * 1000 * 24);
+        long diffWeeks = timeDifferenceMilliseconds / (60 * 60 * 1000 * 24 * 7);
+        long diffMonths = (long) (timeDifferenceMilliseconds / (60 * 60 * 1000 * 24 * 30.41666666));
+        long diffYears = timeDifferenceMilliseconds / ((long)60 * 60 * 1000 * 24 * 365);
+
+        if (diffSeconds < 1) {
+            return "vừa mới đăng";
+        } else if (diffMinutes < 1) {
+            return diffSeconds + " giây";
+        } else if (diffHours < 1) {
+            return diffMinutes + " phút";
+        } else if (diffDays < 1) {
+            return diffHours + " giờ";
+        } else if (diffWeeks < 1) {
+            return diffDays + " ngày";
+        } else if (diffMonths < 1) {
+            return diffWeeks + " tuần";
+        } else if (diffYears < 1) {
+            return diffMonths + " tháng";
+        } else {
+            return diffYears + " năm";
+        }
+    }
+    }
+

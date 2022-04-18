@@ -27,18 +27,17 @@ public class UserInfo {
 
     private String backGround;
 
-
-
     @OneToOne
     private User user;
 
-    public UserInfo(String email, String fullName, String phoneNumber, String dateOfBirth, String address, User user) {
+    public UserInfo(String email, String fullName, String phoneNumber, String dateOfBirth, String address, String avatar, String backGround, User user) {
         this.email = email;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
+        this.avatar = avatar;
+        this.backGround = backGround;
         this.user = user;
     }
-
 }

@@ -8,22 +8,21 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ImagePostUser {
-    @Id
+@AllArgsConstructor
+public class ListFriend {
+@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String image;
+    @ManyToOne
+    private UserInfo userInfo;
 
     @ManyToOne
-    private PostUser postUser;
+    private UserInfo friendsOfUserinfo;
 
-    public ImagePostUser(String image, PostUser postUser) {
-        this.image = image;
-        this.postUser = postUser;
+    public ListFriend(UserInfo userInfo, UserInfo friendsOfUserinfo) {
+        this.userInfo = userInfo;
+        this.friendsOfUserinfo = friendsOfUserinfo;
     }
-
-
 }

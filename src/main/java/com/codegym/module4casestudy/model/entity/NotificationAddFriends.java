@@ -10,20 +10,16 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImagePostUser {
+public class NotificationAddFriends {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String image;
+    @ManyToOne
+    private UserInfo fromUser;
 
     @ManyToOne
-    private PostUser postUser;
+    private UserInfo toUser;
 
-    public ImagePostUser(String image, PostUser postUser) {
-        this.image = image;
-        this.postUser = postUser;
-    }
-
-
+    private int status;
 }
