@@ -10,4 +10,6 @@ public interface IUserInfoService extends IGeneralService<UserInfo> {
 
     Optional<UserInfo> findByUserId(Long userId);
 
+    UserInfo findByEmail(String email);
+
 }

@@ -27,6 +27,11 @@ public class UserInfo {
 
     private String backGround;
 
+    private String password;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
     @OneToOne
     private User user;
 
@@ -39,5 +44,22 @@ public class UserInfo {
         this.avatar = avatar;
         this.backGround = backGround;
         this.user = user;
+        this.password = this.user.getPassword();
+    }
+
+    public UserInfo(Long id, String email, String fullName, String phoneNumber, String dateOfBirth, String address, String avatar, String backGround, String password, User user) {
+        this.id = id;
+        this.email = email;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.avatar = avatar;
+        this.backGround = backGround;
+        this.password = password;
+        this.user = user;
+    }
+
+    public UserInfo(Long id, String email, String fullName, String phoneNumber, String dateOfBirth, String address, String image, String backGround, User user) {
     }
 }
